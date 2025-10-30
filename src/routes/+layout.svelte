@@ -13,8 +13,9 @@
   <div class="container mx-auto px-4 py-3">
     <div class="flex items-center justify-between gap-4">
       <!-- Logo -->
-      <a href="/" class="text-2xl font-bold text-gray-100 hover:text-white transition-colors whitespace-nowrap">
-        ToolsDB
+      <a href="/" class="flex items-center gap-2 text-2xl font-bold text-gray-100 hover:text-white transition-colors whitespace-nowrap">
+        <img src="/toolsdb.png" alt="ToolsDB Logo" class="h-8 w-8" />
+        <span>ToolsDB</span>
       </a>
       
       <!-- Desktop Menu -->

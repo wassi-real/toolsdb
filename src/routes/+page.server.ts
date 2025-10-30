@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types'
-import type { Tool } from '$lib/types'
+import type { Tool, Ad } from '$lib/types'
 import { createClient } from '@supabase/supabase-js'
 import { PUBLIC_SUPABASE_URL } from '$env/static/public'
 import { SUPABASE_SERVICE_KEY } from '$env/static/private'
@@ -16,6 +16,7 @@ export const load: PageServerLoad = async ({ depends }) => {
     }
   })
   
+  // Fetch tools
   const { data: tools, error: supabaseError } = await supabase
     .from('tools')
     .select('*')
@@ -23,6 +24,17 @@ export const load: PageServerLoad = async ({ depends }) => {
   if (supabaseError) {
     console.error('Supabase error:', supabaseError)
     throw error(500, `Failed to fetch tools: ${supabaseError.message}`)
+  }
+
+  // Fetch active ads
+  const { data: ads, error: adsError } = await supabase
+    .from('ads')
+    .select('*')
+    .eq('is_active', true)
+
+  if (adsError) {
+    console.error('Ads error:', adsError)
+    // Don't throw error for ads, just log it and continue
   }
 
   // Randomize the tools array
@@ -33,9 +45,11 @@ export const load: PageServerLoad = async ({ depends }) => {
   }
 
   console.log('Tools loaded:', shuffled.length)
+  console.log('Ads loaded:', ads?.length || 0)
   
   return {
-    tools: shuffled
+    tools: shuffled,
+    ads: ads || []
   }
 }
 
